@@ -1,0 +1,4 @@
+name: Workflowtest
+version: '${version}'
+main: io.github.magiccheese1.workflowtest.Workflowtest
+api-version: 1.17
