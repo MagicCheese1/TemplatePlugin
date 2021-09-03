@@ -27,7 +27,7 @@ jobs:
           upload_url: ${{ steps.create-new-release.outputs.upload_url }}
           asset_path: ./workflowtest.jar
           asset_name: "workflowtest.jar"
-          asset_content_type: application
+          asset_content_type: application/jar
 
   build:
     runs-on: ubuntu-latest
