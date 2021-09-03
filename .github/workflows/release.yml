@@ -11,6 +11,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Output
+      - name: Generate release changelog
+        uses: Bullrich/generate-release-changelog@master
+        id: Changelog
+        env:
+          REPO: ${{ github.repository }}
       - name: Create Github Release
         id: create-new-release
         uses: actions/create-release@v1
@@ -19,6 +24,8 @@ jobs:
         with:
           tag_name: ${{ github.run_number }}
           release_name: ${{ github.run_number }}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
       - name: Upload asset to Github Release
         uses: actions/upload-release-asset@v1
         env:
