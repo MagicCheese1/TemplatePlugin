@@ -11,11 +11,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Output
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Generate changelog
+        id: changelog
+        uses: jaywcjlove/changelog-generator@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create Github Release
         id: create-new-release
@@ -25,7 +25,9 @@ jobs:
         with:
           tag_name: ${{ github.run_number }}
           release_name: ${{ github.run_number }}
-          body: ${{steps.github_release.outputs.changelog}}
+          body: |
+            ${{ steps.changelog.outputs.compareurl }}
+            ${{ steps.changelog.outputs.changelog }}
       - name: Upload asset to Github Release
         uses: actions/upload-release-asset@v1
         env:
