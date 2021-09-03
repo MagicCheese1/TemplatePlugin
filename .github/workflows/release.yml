@@ -33,8 +33,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-new-release.outputs.upload_url }}
-          asset_path: ./workflowtest.jar
-          asset_name: "workflowtest.jar"
+          asset_path: ./${{ github.event.repository.name }}.jar
+          asset_name: ${{ github.event.repository.name }}.jar
           asset_content_type: application/jar
 
   build:
@@ -54,7 +54,7 @@ jobs:
           path: |
             ~/.m2/
             ~/.gradle/caches/
-            ~/.gradle/wrapper
+            ~/.gradle/wrapper/
             ./BuildTools/
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
@@ -67,7 +67,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew -Pversion="${{ github.run_number }}" build
+        run: ./gradlew -Pversion="${{ github.run_number }}" -PpluginName="${{ github.event.repository.name }}" build
 
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
