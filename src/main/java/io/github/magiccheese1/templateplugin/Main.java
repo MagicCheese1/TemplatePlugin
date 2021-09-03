@@ -1,8 +1,8 @@
-package io.github.magiccheese1.workflowtest;
+package io.github.magiccheese1.templateplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Workflowtest extends JavaPlugin {
+public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {

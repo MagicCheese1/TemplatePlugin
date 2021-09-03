@@ -1,4 +1,4 @@
-name: Workflowtest
+name: '${pluginName}'
 version: '${version}'
-main: io.github.magiccheese1.workflowtest.Workflowtest
+main: ${group}.templateplugin.Main
 api-version: 1.17
