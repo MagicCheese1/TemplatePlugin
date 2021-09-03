@@ -53,6 +53,7 @@ jobs:
         with:
           path: |
             ~/.m2/
+            ~/.gradle/caches/
             ./BuildTools/
           key: ${{ runner.os }}-${{ hashFiles('./build.gradle') }}
       - name: Setup gradlew permissions
