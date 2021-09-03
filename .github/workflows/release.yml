@@ -39,6 +39,8 @@ jobs:
           distribution: 'adopt'
       - name: Setup Spigot with BuildTools
         run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1
+      - name: Setup gradlew permissions
+        run: chmod +x ./gradlew
       - name: Build with Gradle
         run: ./gradlew -Pversion="${{ github.run_number }}" build
       - name: Cleanup Gradle Cache
