@@ -55,7 +55,7 @@ jobs:
             ./BuildTools/
           key: ${{ runner.os }}-${{ hashFiles('./build.gradle') }}
       - name: Setup Spigot with BuildTools
-        run: mkdir BuildTools && cd BuildTools && wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1 --compile-if-changed && cd ..
+        run: mkdir BuildTools -p && cd BuildTools && wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1 --compile-if-changed && cd ..
       - name: Setup gradlew permissions
         run: chmod +x ./gradlew
       - name: Build with Gradle
