@@ -41,31 +41,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: set up JDK 16
         uses: actions/setup-java@v2
         with:
           java-version: '16'
           distribution: 'adopt'
+
       - name: Cache Spigot
         uses: actions/cache@v2
         with:
           path: |
             ~/.m2/
             ~/.gradle/caches/
+            ~/.gradle/wrapper
             ./BuildTools/
-          key: ${{ runner.os }}-${{ hashFiles('./build.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Setup Spigot with BuildTools
         run: mkdir BuildTools -p && cd BuildTools && wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1 --compile-if-changed && cd ..
+
       - name: Setup gradlew permissions
         run: chmod +x ./gradlew
+
       - name: Build with Gradle
         run: ./gradlew -Pversion="${{ github.run_number }}" build
+
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
         # Restoring these files from a GitHub Actions cache might cause problems for future builds.
         run: |
           rm -f ~/.gradle/caches/modules-2/modules-2.lock
           rm -f ~/.gradle/caches/modules-2/gc.properties
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
