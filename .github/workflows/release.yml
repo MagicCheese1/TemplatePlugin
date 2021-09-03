@@ -26,7 +26,6 @@ jobs:
           tag_name: ${{ github.run_number }}
           release_name: ${{ github.run_number }}
           body: |
-            ${{ steps.changelog.outputs.compareurl }}
             ${{ steps.changelog.outputs.changelog }}
       - name: Upload asset to Github Release
         uses: actions/upload-release-asset@v1
@@ -48,7 +47,14 @@ jobs:
           java-version: '16'
           distribution: 'adopt'
       - name: Setup Spigot with BuildTools
-        run: wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1
+        run: mkdir BuildTools && cd BuildTools && wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1 --compile-if-changed && cd ..
+      - name: Cache Spigot
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/
+            ./BuildTools/
+          key: ${{ runner.os }}-${{ hashFiles('./build.gradle') }}
       - name: Setup gradlew permissions
         run: chmod +x ./gradlew
       - name: Build with Gradle
