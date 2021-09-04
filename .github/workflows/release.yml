@@ -11,6 +11,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: Output
+
       - name: Generate changelog
         id: changelog
         uses: jaywcjlove/changelog-generator@main
@@ -23,10 +24,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.run_number }}
-          release_name: ${{ github.run_number }}
+          tag_name: \#${{ github.run_number }}
+          release_name: \#${{ github.run_number }}
           body: |
             ${{ steps.changelog.outputs.changelog }}
+
       - name: Upload asset to Github Release
         uses: actions/upload-release-asset@v1
         env:
@@ -67,7 +69,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew -Pversion="${{ github.run_number }}" -PpluginName="${{ github.event.repository.name }}" build
+        run: ./gradlew -Pversion="\#${{ github.run_number }}" -PpluginName="${{ github.event.repository.name }}" build
 
       - name: Cleanup Gradle Cache
         # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
