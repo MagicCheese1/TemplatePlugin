@@ -6,6 +6,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build-and-test
+    # Only create a Release if it was a push to main
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v2
@@ -50,7 +52,7 @@ jobs:
           java-version: '16'
           distribution: 'adopt'
 
-      - name: Cache Spigot
+      - name: Cache Spigot and gradle
         uses: actions/cache@v2
         with:
           path: |
@@ -61,7 +63,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
+            
       - name: Setup Spigot with BuildTools
         run: mkdir BuildTools -p && cd BuildTools && wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -O BuildTools.jar && java -jar BuildTools.jar --rev 1.17.1 --compile-if-changed && cd ..
 
