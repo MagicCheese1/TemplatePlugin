@@ -1,4 +1,4 @@
-package io.github.magiccheese1.templateplugin;
+package template.templategroup.templateplugin;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
