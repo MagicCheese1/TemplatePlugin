@@ -14,12 +14,6 @@ jobs:
         with:
           name: Output
 
-      - name: Generate changelog
-        id: changelog
-        uses: jaywcjlove/changelog-generator@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Github Release
         id: create-new-release
         uses: actions/create-release@v1
@@ -28,8 +22,6 @@ jobs:
         with:
           tag_name: build-${{ github.run_number }}
           release_name: build-${{ github.run_number }}
-          body: |
-            ${{ steps.changelog.outputs.changelog }}
 
       - name: Upload asset to Github Release
         uses: actions/upload-release-asset@v1
