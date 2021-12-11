@@ -1,4 +1,4 @@
-name: '${pluginName}'
+name: TemplatePlugin
 version: '${version}'
 main: template.templategroup.templateplugin.Main
 api-version: 1.17

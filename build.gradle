@@ -19,12 +19,6 @@ dependencies {
     compileOnly 'org.spigotmc:spigot:1.17.1-R0.1-SNAPSHOT'
 }
 
-jar {
-    archiveFileName.set("${pluginName}-noshade.jar")
-}
-shadowJar {
-    archiveFileName.set("${pluginName}.jar")
-}
 jar.dependsOn(shadowJar)
 
 def targetJavaVersion = 16
@@ -45,7 +39,7 @@ tasks.withType(JavaCompile).configureEach {
 
 //Replace plugin name and version in plugin.yml
 processResources {
-    def props = [version: version, pluginName: pluginName, group: project.getGroup()]
+    def props = [version: version, group: project.getGroup()]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
